@@ -10,7 +10,7 @@ import edu.illinois.cs.cs124.ay2022.mp.models.ResultMightThrow;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
-import org.osmdroid.api.IGeoPoint;
+
 import org.osmdroid.api.IMapController;
 import org.osmdroid.tileprovider.tilesource.XYTileSource;
 import org.osmdroid.util.GeoPoint;
@@ -53,7 +53,7 @@ public final class MainActivity extends AppCompatActivity
   public static final double MAP_LIMIT_SOUTH = 40.0247;
   public static final double MAP_LIMIT_WEST = -88.3331;
   public static final double MAP_LIMIT_EAST = -88.1433;
-  GeoPoint center = new GeoPoint(40.10986682167534, -88.22831928981661);
+  private GeoPoint poop = new GeoPoint(40.10986682167534, -88.22831928981661);
   // Max and default map zoom levels
   public static final double MAP_MIN_ZOOM = 12.0;
   public static final double MAP_DEFAULT_ZOOM = 17.0;
@@ -96,7 +96,7 @@ public final class MainActivity extends AppCompatActivity
     // Set the current map zoom level to the default
     IMapController mapController = mapView.getController();
     mapController.setZoom(MAP_DEFAULT_ZOOM);
-    mapController.setCenter(center);
+    mapController.setCenter(poop);
   }
 
   /*
