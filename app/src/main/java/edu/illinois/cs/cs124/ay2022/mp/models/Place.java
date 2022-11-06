@@ -79,7 +79,7 @@ public final class Place {
       String[] get1 = get.split(" ");
 
       for (int i = 0; i < get1.length; i++) {
-        System.out.println(get1[i]);
+        //System.out.println(get1[i]);
         if (get1[i].equalsIgnoreCase(newSearch)) {
           newList.add(places.get(k));
           break;
