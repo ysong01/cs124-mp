@@ -14,8 +14,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -23,6 +25,7 @@ import okhttp3.mockwebserver.Dispatcher;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 import okhttp3.mockwebserver.RecordedRequest;
+
 
 /*
  * Favorite Place API server.
@@ -67,6 +70,59 @@ public final class Server extends Dispatcher {
         .setHeader("Content-Type", "application/json; charset=utf-8");
   }
 
+  private MockResponse postFavoritePlace(final RecordedRequest request) {
+    //System.out.println(request.getBody().readUtf8());
+    try {
+    // deserialize
+
+    // check if valid json
+
+
+
+      Place input = OBJECT_MAPPER.readValue(request.getBody().readUtf8(), Place.class);
+    // check place object
+      Pattern idChecker = Pattern.compile(
+          "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$");
+
+      if (
+          input.getId().length() == 0
+          || input.getDescription().length() == 0
+          || input.getName().length() == 0
+          || input.getLongitude() < -180.0
+          || input.getLongitude() > 180.0
+          || input.getLatitude() < -90.0
+          || input.getLatitude() > 90.0
+          || input.getName() == null
+          || !idChecker.matcher(input.getId()).matches()) {
+        return new MockResponse()
+          .setResponseCode(HttpURLConnection.HTTP_BAD_REQUEST)
+          .setHeader("Content-Type", "application/json; charset=utf-8");
+      }
+    // uuid
+
+
+
+      // add the request to the list
+      boolean checker = false;
+      for (int i = 0; i < places.size(); i++) {
+        //UUID listID = UUID.fromString(places.get(i).getId());
+        if (places.get(i).getId().equals(input.getId())) {
+          places.set(i, input);
+          checker = true;
+        }
+      }
+      if (checker == false) {
+        places.add(input);
+      }
+    } catch (Exception e) {
+      return new MockResponse()
+          .setResponseCode(HttpURLConnection.HTTP_BAD_REQUEST)
+          .setHeader("Content-Type", "application/json; charset=utf-8");
+    }
+    return new MockResponse()
+        .setResponseCode(HttpURLConnection.HTTP_OK)
+        .setHeader("Content-Type", "application/json; charset=utf-8");
+  }
   /*
    * Server request dispatcher.
    * Responsible for parsing the HTTP request and determining how to respond.
@@ -102,6 +158,8 @@ public final class Server extends Dispatcher {
       } else if (path.equals("/places") && method.equals("GET")) {
         // Return the JSON list of restaurants for a GET request to the path /restaurants
         return getPlaces();
+      } else if (path.equals("/favoriteplace") && method.equals("POST")) {
+        return postFavoritePlace(request);
       }
 
       // If the route didn't match above, then we return a 404 NOT FOUND
@@ -137,7 +195,11 @@ public final class Server extends Dispatcher {
     for (String[] parts : csvReader) {
       toReturn.add(
           new Place(
-              parts[0], parts[1], Double.parseDouble(parts[2]), Double.parseDouble(parts[3]), parts[4]));
+              parts[0],
+              parts[1],
+              Double.parseDouble(parts[2]),
+              Double.parseDouble(parts[3]),
+              parts[4]));
     }
     return toReturn;
   }

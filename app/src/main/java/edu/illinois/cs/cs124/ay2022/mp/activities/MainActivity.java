@@ -11,7 +11,6 @@ import edu.illinois.cs.cs124.ay2022.mp.models.ResultMightThrow;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
-
 import org.osmdroid.api.IMapController;
 import org.osmdroid.tileprovider.tilesource.XYTileSource;
 import org.osmdroid.util.GeoPoint;
@@ -85,7 +84,7 @@ public final class MainActivity extends AppCompatActivity
     // avoid adding load to existing OSM tile servers.
     mapView.setTileSource(
         new XYTileSource(
-            "CS124", 12, 18, 256, ".png", new String[]{"https://tiles.cs124.org/tiles/"}));
+            "CS124", 12, 18, 256, ".png", new String[] {"https://tiles.cs124.org/tiles/"}));
 
     // Limit the map to the Champaign-Urbana area, which is also the only area that our tile server
     // can provide tiles for.
@@ -227,9 +226,8 @@ public final class MainActivity extends AppCompatActivity
 
       updateShownPlaces(allPlaces);
       return true;
-
     }
-    //MainActivity list2 = new MainActivity();
+    // MainActivity list2 = new MainActivity();
     updateShownPlaces(Place.search(allPlaces, newText));
     return true;
   }
