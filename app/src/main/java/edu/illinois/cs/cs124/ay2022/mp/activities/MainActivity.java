@@ -1,5 +1,6 @@
 package edu.illinois.cs.cs124.ay2022.mp.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,9 +13,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 import org.osmdroid.api.IMapController;
+import org.osmdroid.events.MapEventsReceiver;
 import org.osmdroid.tileprovider.tilesource.XYTileSource;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
+import org.osmdroid.views.overlay.MapEventsOverlay;
 import org.osmdroid.views.overlay.Marker;
 import org.osmdroid.views.overlay.Overlay;
 
@@ -29,7 +32,7 @@ import org.osmdroid.views.overlay.Overlay;
  */
 @SuppressWarnings("FieldCanBeLocal")
 public final class MainActivity extends AppCompatActivity
-    implements Consumer<ResultMightThrow<List<Place>>>, SearchView.OnQueryTextListener {
+    implements Consumer<ResultMightThrow<List<Place>>>, SearchView.OnQueryTextListener, MapEventsReceiver {
   // You may find this useful when adding logging
   private static final String TAG = MainActivity.class.getSimpleName();
 
@@ -209,7 +212,7 @@ public final class MainActivity extends AppCompatActivity
     // Update the currently-open marker
     // This will clear openPlace if the marker that was previously shown is no longer open
     openPlace = newOpenPlace;
-
+    mapView.getOverlays().add(new MapEventsOverlay(this));
     // Force the MapView to redraw so that we see the updated list of markers
     mapView.invalidate();
   }
@@ -230,5 +233,25 @@ public final class MainActivity extends AppCompatActivity
     // MainActivity list2 = new MainActivity();
     updateShownPlaces(Place.search(allPlaces, newText));
     return true;
+  }
+
+  @Override
+  public boolean singleTapConfirmedHelper(final GeoPoint p) {
+    Intent launchAddFavoritePlace = new Intent(this, AddPlaceActivity.class);
+    startActivity(launchAddFavoritePlace);
+    return false;
+  }
+
+  @Override
+  public boolean longPressHelper(final GeoPoint p) {
+    Intent launchAddFavoritePlace = new Intent(this, AddPlaceActivity.class);
+    Place place1 = new Place();
+    String s1 = Double.toString(p.getLatitude());
+    String s2 = Double.toString(p.getLongitude());
+
+    launchAddFavoritePlace.putExtra("latitude", s1);
+    launchAddFavoritePlace.putExtra("longitude", s2);
+    startActivity(launchAddFavoritePlace);
+    return false;
   }
 }

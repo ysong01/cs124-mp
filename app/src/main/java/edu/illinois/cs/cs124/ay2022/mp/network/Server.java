@@ -101,7 +101,6 @@ public final class Server extends Dispatcher {
     // uuid
 
 
-
       // add the request to the list
       boolean checker = false;
       for (int i = 0; i < places.size(); i++) {
