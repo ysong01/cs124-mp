@@ -111,7 +111,7 @@ public final class Server extends Dispatcher {
           checker = true;
         }
       }
-      if (checker == false) {
+      if (!checker) {
         places.add(input);
       }
     } catch (Exception e) {
