@@ -277,7 +277,6 @@ public final class MP2Test {
           "Dog Park",
           HttpURLConnection.HTTP_OK,
           PLACES_COUNT + 1);
-
       testServerFavoritePlacePostHelper(
           gracieUUID,
           "Gracie Challen",
@@ -286,7 +285,6 @@ public final class MP2Test {
           "Banjo's House",
           HttpURLConnection.HTTP_OK,
           PLACES_COUNT + 1);
-
       testServerFavoritePlacePostHelper(
           xyzUUID,
           "Xyz Challen",
@@ -512,12 +510,13 @@ public final class MP2Test {
                   new Intent(ApplicationProvider.getApplicationContext(), AddPlaceActivity.class);
               intent.putExtra("latitude", Double.toString(randomPoint.getLatitude()));
               intent.putExtra("longitude", Double.toString(randomPoint.getLongitude()));
+              String randomDescription = "" + random.nextInt();
 
               ActivityScenario.launch(intent)
                   .onActivity(
                       addPlaceActivity -> {
                         EditText editText = addPlaceActivity.findViewById(R.id.description);
-                        editText.setText("" + random.nextInt());
+                        editText.setText(randomDescription);
                         Button saveButton = addPlaceActivity.findViewById(R.id.save_button);
                         saveButton.performClick();
                         pause();
@@ -559,6 +558,9 @@ public final class MP2Test {
                                     assertWithMessage("Added place has wrong ID")
                                         .that(found.getId())
                                         .isEqualTo(FavoritePlacesApplication.CLIENT_ID);
+                                    assertWithMessage("Added place has wrong description")
+                                        .that(found.getDescription())
+                                        .isEqualTo(randomDescription);
 
                                   } catch (InterruptedException | ExecutionException e) {
                                     throw new IllegalStateException(e);
@@ -571,4 +573,4 @@ public final class MP2Test {
   }
 }
 // DO NOT REMOVE THIS LINE
-// md5: 2dc2efe0adbc2801316c8cd9bef25751
+// md5: 040725a85615cfb2cf708eaa8e3c04d1
