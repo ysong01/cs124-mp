@@ -32,7 +32,9 @@ import org.osmdroid.views.overlay.Overlay;
  */
 @SuppressWarnings("FieldCanBeLocal")
 public final class MainActivity extends AppCompatActivity
-    implements Consumer<ResultMightThrow<List<Place>>>, SearchView.OnQueryTextListener, MapEventsReceiver {
+    implements Consumer<ResultMightThrow<List<Place>>>,
+        SearchView.OnQueryTextListener,
+        MapEventsReceiver {
   // You may find this useful when adding logging
   private static final String TAG = MainActivity.class.getSimpleName();
 
@@ -178,6 +180,11 @@ public final class MainActivity extends AppCompatActivity
       marker.setPosition(new GeoPoint(place.getLatitude(), place.getLongitude()));
       marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
       marker.setTitle(place.getDescription());
+      /*
+      ImageView view = (ImageView) findViewById(R.id.imageView3);
+      Bitmap bitmap = ((BitmapDrawable) view.getDrawable()).getBitmap();
+      Drawable drawable = new BitmapDrawable(getResources(), bitmap);
+      marker.setIcon(drawable);
 
       /*
        * Normally clicking on the marker both opens the popup and recenters the map.
@@ -237,8 +244,7 @@ public final class MainActivity extends AppCompatActivity
 
   @Override
   public boolean singleTapConfirmedHelper(final GeoPoint p) {
-    Intent launchAddFavoritePlace = new Intent(this, AddPlaceActivity.class);
-    startActivity(launchAddFavoritePlace);
+
     return false;
   }
 

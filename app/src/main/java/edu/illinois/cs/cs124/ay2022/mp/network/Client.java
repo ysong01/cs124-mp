@@ -28,7 +28,6 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.concurrent.Executors;
-
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
@@ -103,23 +102,21 @@ public final class Client {
         new StringRequest(
             Request.Method.POST,
             FavoritePlacesApplication.SERVER_URL + "/favoriteplace",
-
             response -> {
               // This code runs on success
 
-                // take place and serialize it to a string and pass it to getbody
-                //String s = mapper2.writeValueAsString(place);
+              // take place and serialize it to a string and pass it to getbody
+              // String s = mapper2.writeValueAsString(place);
 
-                /*
-                 * Deserialize the String into a List<Restaurant> using Jackson.
-                 * The TypeReference<>() {} is a bit of magic required to have Jackson
-                 * return a List with the correct type.
-                 * We wrap this in a try-catch to handle deserialization errors that may occur.
-                 */
+              /*
+               * Deserialize the String into a List<Restaurant> using Jackson.
+               * The TypeReference<>() {} is a bit of magic required to have Jackson
+               * return a List with the correct type.
+               * We wrap this in a try-catch to handle deserialization errors that may occur.
+               */
 
-                // Pass the List<Place> to the callback
+              // Pass the List<Place> to the callback
               callback.accept(new ResultMightThrow<>(true));
-
             },
             error -> {
               // This code runs on failure
@@ -145,11 +142,9 @@ public final class Client {
           }
         };
 
-
     // Actually queue the request
     // The callbacks above will be run once it completes
     requestQueue.add(postFavoritePlaceRequest);
-
   }
   /*
    * You do not need to modify the code below.
